@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
 import TodoList from "./TodoList";
 import { addTodo, getAllTodos } from "@/utils/supabaseFunctions";
+import { supabase } from "../utils/supabase";
 
+//todos=todoリストを保持する配列、title=入力フォームの文字列(1件分)
 const TodoApp = () => {
-  const [todos, setTodos] = useState<any[]>([]);
+  const [todos, setTodos] = useState<any>([]);
   const [title, setTitle] = useState<string>("");
+
+  //データベースから全todoを取得→todosにセットする
   useEffect(() => {
     const getTodos = async () => {
       const todos = await getAllTodos();
@@ -15,11 +19,12 @@ const TodoApp = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await addTodo(title);
-    const todos = await getAllTodos();
-    setTodos(todos);
+    //Todo追加、title=todoの入力内容
+    await addTodo(title); //supabaseに新しいtodoを追加
+    const todos = await getAllTodos(); //最新のtodoを再取得
+    setTodos(todos); //画面に表示
 
-    setTitle("");
+    setTitle(""); //入力フォームを空にする
   };
 
   return (
@@ -28,11 +33,14 @@ const TodoApp = () => {
       <form onSubmit={(e) => handleSubmit(e)}>
         <input
           type="text"
-          className="mr-2 shadow-lg p-1 outline-none"
-          onChange={(e) => setTitle(e.target.value)}
+          className="mr-2 shadow-lg p-1 bg-orange-100 rounded-md"
+          onChange={(e) => setTitle(e.target.value)} //入力された文字列をstateに保存
           value={title}
         />
-        <button className="shadow-md border-2 px-1 py-1 rounded-lg bg-green-200">
+        <button
+          className="shadow-md border-2 px-1 py-1 rounded-lg bg-green-200"
+          type="submit"
+        >
           Add
         </button>
       </form>

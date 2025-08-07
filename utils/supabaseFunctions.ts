@@ -6,7 +6,10 @@ export const getAllTodos = async () => {
 };
 
 export const addTodo = async (title: string) => {
-  const { data, error } = await supabase.from("todo").insert([{ title }]);
+  const { data, error } = await supabase
+    .from("todo")
+    .insert([{ title }])
+    .select();
 
   if (error) {
     console.error("insert Error:", error.message);

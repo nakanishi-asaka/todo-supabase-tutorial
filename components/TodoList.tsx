@@ -25,7 +25,7 @@ const TodoList = (props: Props) => {
           >
             <li className="font-medium">{todo.title}</li>
             <span
-              className="cursor-pointer"
+              className="cursor-pointer "
               onClick={() => handleDelete(todo.id)}
             >
               ✖
